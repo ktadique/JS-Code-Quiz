@@ -34,17 +34,19 @@ When the game ends, it should display their score and give the user the ability 
 let quizQuestions = [
   {
     //q1
-    question: "yes?",
-    answers: ["yes", "no", "maybe"],
+    question: "Inside which HTML element do we put the JavaScript?",
+    answers: ["<script>", "<js>", "<javascript>", "<scripting>"],
   },
-  {
+  /*  {
     //q2
-    question: "no?",
-    answers: ["yes", "no", "maybe"],
+    question: "What is the correct JavaScript syntax to change the content of the HTML element below?
+
+<p id="demo">This is a demonstration.</p>",
+    answers: ["document.getElementByName("p").innerHTML = "Hello World!";", " document.getElementById("demo").innerHTML = "Hello World!";", " #demo.innerHTML = "Hello World!";", " document.getElement("p").innerHTML = "Hello World!";"],
   },
   {
     //q3
-    question: "maybe?",
-    answers: ["yes", "no", "maybe"],
-  },
+    question: "Inside which HTML element do we put the JavaScript?",
+    answers: ["", "", "", ""],
+  }, */
 ];
