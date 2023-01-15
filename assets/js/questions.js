@@ -36,6 +36,7 @@ let quizQuestions = [
     //q1
     question: "Inside which HTML element do we put the JavaScript?",
     answers: ["<script>", "<js>", "<javascript>", "<scripting>"],
+    answer: "<script>",
   },
   /*  {
     //q2

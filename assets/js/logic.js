@@ -53,28 +53,37 @@ function question() {
   let choicesDiv = document.querySelector("#choices");
 
   //unhide #questions by changing class from hide
-  questionScreen.removeAttribute("class", "hide");
+  questionScreen.setAttribute("class", "");
 
   for (i = 0; i < quizQuestions.length; i++) {
     let theQuestion = quizQuestions[i].question;
     questionTitle.innerText = theQuestion;
-  }
 
-  //Questions contain buttons for each answer.
-  let choicesList = document.createElement("ol");
-  choicesDiv.appendChild(choicesList);
+    //Questions contain buttons for each answer.
+    let choicesList = document.createElement("ol");
+    choicesDiv.appendChild(choicesList);
 
-  for (i = 0; i < quizQuestions[i].answers.length; i++) {
-    let choiceButton = document.createElement("button");
-    let choices = document.createElement("li");
+    let answers = quizQuestions[i].answers;
 
-    // let choicesText =
-    choicesList.appendChild(choiceButton);
-    choiceButton.appendChild(choices);
-    choices.textContent = quizQuestions[i].answers[i];
+    for (i = 0; i < answers.length; i++) {
+      let choiceButton = document.createElement("button");
+      let choices = document.createElement("li");
+
+      choicesList.appendChild(choiceButton);
+      choiceButton.appendChild(choices);
+      choices.textContent = answers[i];
+    }
+
+    //keep track of user answer
+    userAnswer = "";
+
+    for (let i = 0; i < quizQuestions.length; i++) {
+      //find selected user answer
+      userAnswer = choices.onclick;
+    }
   }
 }
-let countdownTimer = 20;
+let countdownTimer = 50;
 
 function countdown() {
   let countdownInterval = setInterval(function () {
@@ -88,7 +97,7 @@ function countdown() {
   }, 1000);
 }
 
-//DOM
+//event listeners
 
 start.addEventListener("click", function () {
   startQuiz();
