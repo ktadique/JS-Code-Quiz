@@ -3,6 +3,7 @@
 let currentQuestion;
 let countdownTimer = 30;
 let countdownInterval;
+var initialsInput = document.querySelector("#initials");
 let startBtn = document.querySelector("#start");
 let timer = document.querySelector("#time");
 let feedback = document.querySelector("#feedback");
@@ -163,9 +164,24 @@ startBtn.addEventListener("click", function () {
   startQuiz();
 });
 
-submitBtn.addEventListener("click", function () {
-  preventDefault();
+submitBtn.addEventListener("click", function (event) {
+  event.preventDefault();
 });
 
+//initials input
+function submitInitials() {
+  let initials = initialsInput.value;
+  if (initials) {
+    return initials;
+  } else {
+    return "UNK";
+  }
+}
+
 //save initials and score function
-function saveScore() {}
+function saveScore() {
+  let userInitials = submitInitials();
+
+  userScoreProfile = { name: userInitials, score: timer.textContent };
+  localStorage.setItem("userScoreProfile", JSON.stringify(userScoreProfile));
+}
