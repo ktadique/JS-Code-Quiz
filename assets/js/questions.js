@@ -35,16 +35,21 @@ let quizQuestions = [
   {
     //q1
     question: "Inside which HTML element do we put the JavaScript?",
-    answers: ["<script>", "<js>", "<javascript>", "<scripting>"],
+    choices: ["<script>", "<js>", "<javascript>", "<scripting>"],
     answer: "<script>",
   },
-  /*  {
+  {
     //q2
-    question: "What is the correct JavaScript syntax to change the content of the HTML element below?
-
-<p id="demo">This is a demonstration.</p>",
-    answers: ["document.getElementByName("p").innerHTML = "Hello World!";", " document.getElementById("demo").innerHTML = "Hello World!";", " #demo.innerHTML = "Hello World!";", " document.getElement("p").innerHTML = "Hello World!";"],
+    question: "How do you write 'Hello World!' in an alert box?",
+    choices: [
+      "prompt('Hello World!')",
+      "alertBox('Hello World!')",
+      "alert('Hello World!')",
+      "msg('Hello World!')",
+    ],
+    answer: "alert('Hello World!')",
   },
+  /*
   {
     //q3
     question: "Inside which HTML element do we put the JavaScript?",

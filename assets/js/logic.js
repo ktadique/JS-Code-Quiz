@@ -1,11 +1,16 @@
 "strict code";
 
+let currentQuestion;
+let countdownTimer = 50;
 let start = document.querySelector("#start");
 let timer = document.querySelector("#time");
 let feedback = document.querySelector("#feedback");
 let endScreen = document.querySelector("#end-screen");
 let finalScore = document.querySelector("#final-score");
 let scoreSubmit = document.querySelector("#submit");
+let questionScreen = document.querySelector("#questions");
+let questionTitle = document.querySelector("#question-title");
+let choicesDiv = document.querySelector("#choices");
 
 ////////////////////////////////////////////////
 // Quiz Psuedocode
@@ -29,6 +34,12 @@ declare a startQuiz function to start quiz
 Questions contain buttons for each answer.
 When answer is clicked, the next question appears
   If the answer clicked was incorrect then subtract time from the clock
+    if 
+
+    a variable that holds the number of the questino theyre on
+      clear the page
+      redraw the content
+      increment what question were on
 
 The quiz should end when all questions are answered or the timer reaches 0.
 
@@ -37,60 +48,86 @@ When the game ends, it should display their score and give the user the ability 
 //-------------------------------
 ////////////////////////////////////////////////
 
-//declare a startQuiz function to start quiz
+//startQuiz function to start quiz
 function startQuiz() {
   let startScreen = document.querySelector("#start-screen");
   //change #start-screen class from start to hide
+  //unhide #questions by changing class from hide
   startScreen.setAttribute("class", "hide");
+  questionScreen.classList.remove("hide");
+  feedback.classList.remove("hide");
+  currentQuestion = 0;
 
   countdown();
-  question();
+  renderQuestion();
 }
 
-function question() {
-  let questionScreen = document.querySelector("#questions");
-  let questionTitle = document.querySelector("#question-title");
-  let choicesDiv = document.querySelector("#choices");
+//clear previous question and then draw next question
+function renderQuestion() {
+  clearQuestion();
+  drawQuestion();
+}
 
-  //unhide #questions by changing class from hide
-  questionScreen.setAttribute("class", "");
+//dr
+function drawQuestion() {
+  let theQuestion = quizQuestions[currentQuestion].question;
+  questionTitle.innerText = theQuestion;
 
-  for (i = 0; i < quizQuestions.length; i++) {
-    let theQuestion = quizQuestions[i].question;
-    questionTitle.innerText = theQuestion;
+  //create an ordered list of answers
+  let choicesList = document.createElement("ol");
+  let answers = quizQuestions[currentQuestion].choices;
 
-    //Questions contain buttons for each answer.
-    let choicesList = document.createElement("ol");
-    choicesDiv.appendChild(choicesList);
+  //append the ordered list inside the choices div
+  choicesDiv.appendChild(choicesList);
 
-    let answers = quizQuestions[i].answers;
+  //create a for loop that will loop through all the choices
+  //within the quizQuestions Array
+  for (i = 0; i < answers.length; i++) {
+    //create a button with an ordered list item inside
+    //for each choice within quizQuestion
+    let choiceButton = document.createElement("button");
+    let choices = document.createElement("li");
 
-    for (i = 0; i < answers.length; i++) {
-      let choiceButton = document.createElement("button");
-      let choices = document.createElement("li");
+    choicesList.appendChild(choiceButton);
+    choiceButton.appendChild(choices);
+    choices.textContent = answers[i];
+  }
+  choices.addEventListener("click", userChoice);
+}
 
-      choicesList.appendChild(choiceButton);
-      choiceButton.appendChild(choices);
-      choices.textContent = answers[i];
-    }
+//Clear current question function
+function clearQuestion() {
+  questionTitle.innerText = "";
+  choices.innerText = "";
+}
 
-    //keep track of user answer
-    userAnswer = "";
+//Endscreen function
+function endQuiz() {}
 
-    for (let i = 0; i < quizQuestions.length; i++) {
-      //find selected user answer
-      userAnswer = choices.onclick;
-    }
+//Answer selection function
+function userChoice(e) {
+  let selection = e.target.innerText;
+  console.log(selection);
+  let correctAnswer = quizQuestions[currentQuestion].answer;
+  console.log(correctAnswer);
+
+  if (selection == correctAnswer) {
+    feedback.textContent = "you got it right!";
+    currentQuestion++;
+    renderQuestion();
+  } else {
+    feedback.textContent = "you got it wrong!";
+    countdownTimer -= 10;
   }
 }
-let countdownTimer = 50;
 
+//Countdown Function
 function countdown() {
   let countdownInterval = setInterval(function () {
     countdownTimer--;
     timer.textContent = countdownTimer;
 
-    if (countdownTimer === 0) {
+    if (countdownTimer <= 0) {
       clearInterval(countdownInterval);
       endScreen.setAttribute("class", "start");
     }
