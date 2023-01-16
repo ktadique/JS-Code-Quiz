@@ -3,6 +3,7 @@
 let currentQuestion;
 let countdownTimer = 30;
 let countdownInterval;
+
 var initialsInput = document.querySelector("#initials");
 let startBtn = document.querySelector("#start");
 let timer = document.querySelector("#time");
@@ -45,6 +46,12 @@ let choicesDiv = document.querySelector("#choices");
               - display high score histories
                 - clear history or 
                 - go back to start page
+
+                save score to local storage
+                create array
+                push score into array
+                sort array
+                display as ordered list score
 */
 
 //-------------------------------
@@ -166,6 +173,8 @@ startBtn.addEventListener("click", function () {
 
 submitBtn.addEventListener("click", function (event) {
   event.preventDefault();
+  saveScore();
+  window.location.href = "./highscores.html";
 });
 
 //initials input
@@ -177,6 +186,12 @@ function submitInitials() {
     return "UNK";
   }
 }
+
+/* save score to local storage
+create array
+push score into array
+sort array
+display as ordered list score */
 
 //save initials and score function
 function saveScore() {
