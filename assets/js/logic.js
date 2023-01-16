@@ -151,8 +151,8 @@ function countdown() {
     timer.textContent = countdownTimer;
 
     if (countdownTimer <= 0) {
-      clearInterval(countdownInterval);
-      endScreen.setAttribute("class", "start");
+      timer.textContent = 0;
+      endQuiz();
     }
   }, 1000);
 }
