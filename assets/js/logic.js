@@ -1,13 +1,14 @@
 "strict code";
 
 let currentQuestion;
-let countdownTimer = 50;
-let start = document.querySelector("#start");
+let countdownTimer = 30;
+let countdownInterval;
+let startBtn = document.querySelector("#start");
 let timer = document.querySelector("#time");
 let feedback = document.querySelector("#feedback");
 let endScreen = document.querySelector("#end-screen");
 let finalScore = document.querySelector("#final-score");
-let scoreSubmit = document.querySelector("#submit");
+let submitBtn = document.querySelector("#submit");
 let questionScreen = document.querySelector("#questions");
 let questionTitle = document.querySelector("#question-title");
 let choicesDiv = document.querySelector("#choices");
@@ -16,35 +17,35 @@ let choicesDiv = document.querySelector("#choices");
 // Quiz Psuedocode
 //-------------------------------
 /* 
-"A start button that when clicked a timer starts..." 
-
-declare a startQuiz function to start quiz
-  grab start button using queryselector
-      add a click event listener to start button
-    declare a function to start a timer
-      use setInterval method to count down
-  change #start-screen class from start to hide
-  unhide #questions by changing class from hide to start
-
-  Create an array of objects which contain the question, choices and answers
-    declare a function that renders the questions
-
-
-"...and the first question appears."
-Questions contain buttons for each answer.
-When answer is clicked, the next question appears
-  If the answer clicked was incorrect then subtract time from the clock
-    if 
-
-    a variable that holds the number of the questino theyre on
-      clear the page
-      redraw the content
-      increment what question were on
-
-The quiz should end when all questions are answered or the timer reaches 0.
-
-When the game ends, it should display their score and give the user the ability to save their initials and their score 
+-show start page
+- click start
+  -start timer at 75s
+    hide start screen
+    unhide question screen
+  -show question
+    -select answer:
+    is correct?
+      -if no: 
+        feedback (wrong)
+        -5 from timer
+      -if yes: 
+          feedback (right)
+            increment question
+    - last question OR timer === 0
+        hide questions
+        show endscreen
+          display final score
+        - input initials
+            if empty display error
+        - click submit
+          - save score and initials to local storage
+          - redirect to highschore.html
+            - retrieve values from local storage
+              - display high score histories
+                - clear history or 
+                - go back to start page
 */
+
 //-------------------------------
 ////////////////////////////////////////////////
 
@@ -52,23 +53,28 @@ When the game ends, it should display their score and give the user the ability 
 function startQuiz() {
   let startScreen = document.querySelector("#start-screen");
   //change #start-screen class from start to hide
-  //unhide #questions by changing class from hide
   startScreen.setAttribute("class", "hide");
+  //unhide question screen
   questionScreen.classList.remove("hide");
+  //unhide feedback footer
   feedback.classList.remove("hide");
+  //set current question array to 0
   currentQuestion = 0;
 
+  //start timer
   countdown();
+  //show question
   renderQuestion();
 }
 
+//show next question function
 //clear previous question and then draw next question
 function renderQuestion() {
   clearQuestion();
   drawQuestion();
 }
 
-//dr
+//create questions
 function drawQuestion() {
   let theQuestion = quizQuestions[currentQuestion].question;
   questionTitle.innerText = theQuestion;
@@ -102,7 +108,20 @@ function clearQuestion() {
 }
 
 //Endscreen function
-function endQuiz() {}
+function endQuiz() {
+  showScore();
+  questionScreen.setAttribute("class", "hide");
+  feedback.setAttribute("class", "hide");
+  endScreen.classList.remove("hide");
+}
+
+//show score function
+function showScore() {
+  let finalScore = document.querySelector("#final-score");
+
+  clearInterval(countdownInterval);
+  finalScore.innerText = timer.textContent;
+}
 
 //Answer selection function
 function userChoice(e) {
@@ -112,18 +131,22 @@ function userChoice(e) {
   console.log(correctAnswer);
 
   if (selection == correctAnswer) {
-    feedback.textContent = "you got it right!";
+    feedback.textContent = "Correct!";
     currentQuestion++;
-    renderQuestion();
+    if (currentQuestion === quizQuestions.length) {
+      endQuiz();
+    } else {
+      renderQuestion();
+    }
   } else {
-    feedback.textContent = "you got it wrong!";
-    countdownTimer -= 10;
+    feedback.textContent = "Wrong!";
+    countdownTimer -= 5;
   }
 }
 
 //Countdown Function
 function countdown() {
-  let countdownInterval = setInterval(function () {
+  countdownInterval = setInterval(function () {
     countdownTimer--;
     timer.textContent = countdownTimer;
 
@@ -136,6 +159,13 @@ function countdown() {
 
 //event listeners
 
-start.addEventListener("click", function () {
+startBtn.addEventListener("click", function () {
   startQuiz();
 });
+
+submitBtn.addEventListener("click", function () {
+  preventDefault();
+});
+
+//save initials and score function
+function saveScore() {}
