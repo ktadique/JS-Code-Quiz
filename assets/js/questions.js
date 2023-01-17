@@ -1,5 +1,3 @@
-//grab necessary html elements and store them into global variables
-//  seperate into other files later
 "strict code";
 
 let quizQuestions = [
@@ -20,7 +18,7 @@ let quizQuestions = [
     ],
     answer: "alert('Hello World!')",
   },
-  /* {
+  {
     //q3
     question: "What is the output of the code console.log(false == '0')",
     choices: ["True", "False", "0", "None of the above"],
@@ -61,5 +59,5 @@ let quizQuestions = [
       "for(initialization; condition; increment)",
     ],
     answer: "for(initialization; condition; increment)",
-  }, */
+  },
 ];

@@ -1,22 +1,23 @@
-//save initials and score function
+"strict code";
 let clearBtn = document.querySelector("#clear");
 
+//final highscore function
 function showHighscore() {
   let highscoreList = document.getElementById("highscores");
 
-  let highscores = [];
-
   let userScoreProfileString = localStorage.getItem("userScoreProfile");
-  let lastUserScore = JSON.parse(userScoreProfileString);
-  let highscoreListItem = document.createElement("li");
+  let userScoreProfiles = JSON.parse(userScoreProfileString);
 
-  highscoreList.appendChild(highscoreListItem);
-
-  highscoreListItem.textContent = `${lastUserScore.name} - ${lastUserScore.score}`;
+  for (i = 0; i < userScoreProfiles.length; i++) {
+    let highscoreListItem = document.createElement("li");
+    highscoreList.appendChild(highscoreListItem);
+    highscoreListItem.textContent = `${userScoreProfiles[i].name} - ${userScoreProfiles[i].score}`;
+  }
 }
 
 showHighscore();
 
+//clear highscore function
 clearBtn.addEventListener("click", function () {
   localStorage.clear();
   location.reload();

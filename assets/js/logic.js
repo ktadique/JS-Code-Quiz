@@ -15,6 +15,9 @@ let questionScreen = document.querySelector("#questions");
 let questionTitle = document.querySelector("#question-title");
 let choicesDiv = document.querySelector("#choices");
 
+let rightBuzz = new Audio("./assets/sfx/correct.wav");
+let wrongBuzz = new Audio("./assets/sfx/incorrect.wav");
+
 ////////////////////////////////////////////////
 // Quiz Psuedocode
 //-------------------------------
@@ -60,7 +63,7 @@ let choicesDiv = document.querySelector("#choices");
 //startQuiz function to start quiz
 function startQuiz() {
   let startScreen = document.querySelector("#start-screen");
-  //change #start-screen class from start to hide
+  //change class from start to hide
   startScreen.setAttribute("class", "hide");
   //unhide question screen
   questionScreen.classList.remove("hide");
@@ -76,9 +79,10 @@ function startQuiz() {
 }
 
 //show next question function
-//clear previous question and then draw next question
 function renderQuestion() {
+  //clear previous question
   clearQuestion();
+  //then draw next question
   drawQuestion();
 }
 
@@ -115,41 +119,40 @@ function clearQuestion() {
   choices.innerText = "";
 }
 
+//Answer selection function
+function userChoice(e) {
+  let selection = e.target.innerText;
+  let correctAnswer = quizQuestions[currentQuestion].answer;
+
+  //answer logic
+  //if selected answer = the right answer
+  if (selection == correctAnswer) {
+    feedback.textContent = "Correct!";
+    rightBuzz.play();
+    //increment currentQuestion array
+    currentQuestion++;
+    //checks to see if it is currently last question
+    if (currentQuestion === quizQuestions.length) {
+      endQuiz();
+      //otherwise show next question
+    } else {
+      renderQuestion();
+    }
+  } else {
+    //otherwise, if wrong
+    feedback.textContent = "Wrong!";
+    wrongBuzz.play();
+    // decrease timer by 5s
+    countdownTimer -= 5;
+  }
+}
+
 //Endscreen function
 function endQuiz() {
   showScore();
   questionScreen.setAttribute("class", "hide");
   feedback.setAttribute("class", "hide");
   endScreen.classList.remove("hide");
-}
-
-//show score function
-function showScore() {
-  let finalScore = document.querySelector("#final-score");
-
-  clearInterval(countdownInterval);
-  finalScore.innerText = timer.textContent;
-}
-
-//Answer selection function
-function userChoice(e) {
-  let selection = e.target.innerText;
-  console.log(selection);
-  let correctAnswer = quizQuestions[currentQuestion].answer;
-  console.log(correctAnswer);
-
-  if (selection == correctAnswer) {
-    feedback.textContent = "Correct!";
-    currentQuestion++;
-    if (currentQuestion === quizQuestions.length) {
-      endQuiz();
-    } else {
-      renderQuestion();
-    }
-  } else {
-    feedback.textContent = "Wrong!";
-    countdownTimer -= 5;
-  }
 }
 
 //Countdown Function
@@ -159,23 +162,25 @@ function countdown() {
     timer.textContent = countdownTimer;
 
     if (countdownTimer <= 0) {
-      timer.textContent = 0;
+      countdownTimer = 0;
       endQuiz();
     }
   }, 1000);
 }
 
-//event listeners
-
 startBtn.addEventListener("click", function () {
   startQuiz();
 });
 
-submitBtn.addEventListener("click", function (event) {
-  event.preventDefault();
-  saveScore();
-  window.location.href = "./highscores.html";
-});
+//Logic for Scores
+
+//show score function
+function showScore() {
+  let finalScore = document.querySelector("#final-score");
+
+  clearInterval(countdownInterval);
+  finalScore.innerText = timer.textContent;
+}
 
 //initials input
 function submitInitials() {
@@ -187,26 +192,33 @@ function submitInitials() {
   }
 }
 
-/* save score to local storage
-create array
-push score into array
-sort array
-display as ordered list score */
-
 //save initials and score function
 function saveScore() {
   let userInitials = submitInitials();
   let userScoreProfile = { name: userInitials, score: timer.textContent };
+  //save score and initials to local storage
   let hasScore = localStorage.getItem("userScoreProfile");
-  console.log(hasScore);
+
   let scoresArray = [];
-  //check if userScoreProfile Exists
+  //check if userScoreProfile has content
   if (hasScore) {
-    //if true, load values inside
+    //if true, parse the string into array
     scoresArray = JSON.parse(hasScore);
+    //push score into array
     scoresArray.push(userScoreProfile);
   } else {
+    //else save object inside the array
     scoresArray = [userScoreProfile];
   }
+  //save array into local storage
   localStorage.setItem("userScoreProfile", JSON.stringify(scoresArray));
 }
+
+//Submit button listens for a click event
+submitBtn.addEventListener("click", function (event) {
+  event.preventDefault();
+  //retrieve values from local storage
+  saveScore();
+  //- redirect to highschore.html
+  window.location.href = "./highscores.html";
+});
