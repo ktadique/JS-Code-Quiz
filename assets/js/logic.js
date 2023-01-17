@@ -1,7 +1,7 @@
 "strict code";
 
 let currentQuestion;
-let countdownTimer = 30;
+let countdownTimer = 75;
 let countdownInterval;
 
 var initialsInput = document.querySelector("#initials");
@@ -197,9 +197,8 @@ display as ordered list score */
 function saveScore() {
   let userInitials = submitInitials();
   //check if userScoreProfile Exists
-  if (userScoreProfile)
-    //if true, load values inside
-
-    userScoreProfile = { name: userInitials, score: timer.textContent };
+  // if (userScoreProfile)
+  //if true, load values inside
+  userScoreProfile = { name: userInitials, score: timer.textContent };
   localStorage.setItem("userScoreProfile", JSON.stringify(userScoreProfile));
 }
