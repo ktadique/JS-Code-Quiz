@@ -1,4 +1,6 @@
 //save initials and score function
+let clearBtn = document.querySelector("#clear");
+
 function showHighscore() {
   let highscoreList = document.getElementById("highscores");
 
@@ -14,3 +16,8 @@ function showHighscore() {
 }
 
 showHighscore();
+
+clearBtn.addEventListener("click", function () {
+  localStorage.clear();
+  location.reload();
+});

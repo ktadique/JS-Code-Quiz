@@ -196,9 +196,17 @@ display as ordered list score */
 //save initials and score function
 function saveScore() {
   let userInitials = submitInitials();
+  let userScoreProfile = { name: userInitials, score: timer.textContent };
+  let hasScore = localStorage.getItem("userScoreProfile");
+  console.log(hasScore);
+  let scoresArray = [];
   //check if userScoreProfile Exists
-  // if (userScoreProfile)
-  //if true, load values inside
-  userScoreProfile = { name: userInitials, score: timer.textContent };
-  localStorage.setItem("userScoreProfile", JSON.stringify(userScoreProfile));
+  if (hasScore) {
+    //if true, load values inside
+    scoresArray = JSON.parse(hasScore);
+    scoresArray.push(userScoreProfile);
+  } else {
+    scoresArray = [userScoreProfile];
+  }
+  localStorage.setItem("userScoreProfile", JSON.stringify(scoresArray));
 }
